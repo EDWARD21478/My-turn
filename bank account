@@ -1,0 +1,66 @@
+class BankAccount:
+    def __init__(self, account_number, balance, owner):
+        # Public member
+        self.owner = owner
+        
+        # Protected members
+        self._account_number = account_number
+        self._balance = balance
+        
+        # Private member
+        self.__pin = "1234"
+
+    def display_account_info(self):
+        print(f"Owner: {self.owner}, Account Number: {self._account_number}, Balance: ${self._balance}")
+
+    def deposit(self, amount):
+        if amount > 0:
+            self._balance += amount
+            print(f"Deposited: ${amount}")
+        else:
+            print("Invalid deposit amount")
+
+    def withdraw(self, amount):
+        if 0 < amount <= self._balance:
+            self._balance -= amount
+            print(f"Withdrawn: ${amount}")
+        else:
+            print("Invalid withdraw amount or insufficient funds")
+
+    def get_balance(self):
+        return self._balance
+
+    def _get_account_number(self):
+        return self._account_number
+
+    def __get_pin(self):
+        return self.__pin
+
+# Instantiate the class
+account = BankAccount("123456789", 1000, "Alice")
+
+# Access the public member directly
+print(account.owner)  # Output: Alice
+
+# Access the protected member using a method
+print(account.get_balance())  # Output: 1000
+
+# Attempt to access the private member directly (will raise AttributeError)
+try:
+    print(account.__pin)
+except AttributeError:
+    print("Cannot access private member directly")
+
+# Access the private member using name mangling (not recommended)
+print(account._BankAccount__get_pin())  # Output: 1234
+
+# Modify the public member directly
+account.owner = "Bob"
+account.display_account_info()  # Output: Owner: Bob, Account Number: 123456789, Balance: $1000
+
+# Use the methods to modify the balance
+account.deposit(500)
+print(account.get_balance())  # Output: 1500
+
+account.withdraw(300)
+print(account.get_balance())  # Output: 1200
